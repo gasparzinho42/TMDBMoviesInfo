@@ -3,4 +3,5 @@ export const colors = {
   inputGray: "#333",
   labelGray: "#8c8c8c",
   modalBackgroundBlack: "#000000bf",
+  footerItemColor: '#737373'
 };

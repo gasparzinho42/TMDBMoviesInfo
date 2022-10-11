@@ -1,5 +1,8 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { colors } from "../../utils/colors";
+interface InputProps {
+  hasValue: boolean;
+}
 const labelUp = keyframes`
     from {
     font-size: 16px;
@@ -7,33 +10,42 @@ const labelUp = keyframes`
   }
 
   to {
-    font-size: 10px;
+    font-size: 11px;
     top: 10%;
   }
 `;
-export const FakeInput = styled.div`
+const animation = css`
+  animation: ${labelUp} 400ms forwards;
+`;
+export const FakeInput = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
   justify-items: flex-start;
   align-items: center;
   background-color: ${colors.inputGray};
   border-radius: 4px;
-  padding: 14px;
+  padding: 16px 0px 10px 10px;
   border: 0;
   &:focus-within > span {
-    animation: ${labelUp} 400ms forwards;
+    ${(props) => (props.hasValue ? "animation: null" : animation)};
   }
 `;
-export const FakePlaceholder = styled.span`
+export const FakePlaceholder = styled.span<InputProps>`
   background-color: transparent;
   position: absolute;
+  font-weight: 300;
+  margin-bottom: 2px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-radius: 4px;
   left: 10px;
   color: ${colors.labelGray};
-  font-size: 16px;
-  top: 30%;
+  font-size: ${(props) => (props.hasValue ? "11px" : "16px")};
+  top: ${(props) => (props.hasValue ? "10%" : "30%")};
   border: none;
 `;
 export const CustomInput = styled.input`
@@ -43,5 +55,5 @@ export const CustomInput = styled.input`
   border: none;
   outline: none;
   width: 100%;
-  height: 50%;
+  height: 100%;
 `;

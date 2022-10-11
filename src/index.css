@@ -1,3 +1,23 @@
+@font-face {
+  font-family: "NetflixSans-Bold";
+  src: url("./assets/fonts/netflixSans/NetflixSans-Bold.otf") format("opentype");
+  src: url("./assets/fonts/netflixSans/NetflixSans-Bold.woff2") format("woff")
+  }
+@font-face {
+  font-family: "NetflixSans-Light";
+  src: url("./assets/fonts/netflixSans/NetflixSans-Light.otf") format("opentype");
+  src: url("./assets/fonts/netflixSans/NetflixSans-Light.woff2") format("woff")
+}
+@font-face {
+  font-family: "NetflixSans-Medium";
+  src: url("./assets/fonts/netflixSans/NetflixSans-Medium.otf") format("opentype");
+  src: url("./assets/fonts/netflixSans/NetflixSans-Medium.woff2") format("woff")
+}
+@font-face {
+  font-family: "NetflixSans-Regular";
+  src: url("./assets/fonts/netflixSans/NetflixSans-Regular.otf") format("opentype");
+  src: url("./assets/fonts/netflixSans/NetflixSans-Regular.woff2") format("woff")
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
