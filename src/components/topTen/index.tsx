@@ -11,7 +11,7 @@ const TopTen: React.FC<FilmRollProps> = ({ number, posterImageURl }) => {
   return (
     <TopTenContainer>
       <TopTenNumber src={netflixNumbers(number)} />
-      <TopTenPoster src={posterImageURl} />
+      <TopTenPoster loading={'lazy'} src={posterImageURl} />
     </TopTenContainer>
   )
 }

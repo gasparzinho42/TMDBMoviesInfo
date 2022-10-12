@@ -3,8 +3,6 @@ import { requests } from '../../common/requests'
 import Box from '../../components/box'
 import FilmRoll from '../../components/filmRoll'
 
-// import { Container } from './styles';
-
 const Browse: React.FC = () => {
   return (
     <Box
@@ -21,7 +19,7 @@ const Browse: React.FC = () => {
         fetchURL={requests.fetchNetflixOriginals}
       />
       <FilmRoll title='Trending Now' fetchURL={requests.fetchTrending} />
-      <FilmRoll title='Top Rated' fetchURL={requests.fetchTopRated} isTopTen />
+      <FilmRoll title='Top 10' fetchURL={requests.fetchTopRated} isTopTen />
       <FilmRoll title='Action Movies' fetchURL={requests.fetchActionMovies} />
       <FilmRoll title='Comedy Movies' fetchURL={requests.fetchComedyMovies} />
       <FilmRoll title='Horror Movies' fetchURL={requests.fetchHorrorMovies} />

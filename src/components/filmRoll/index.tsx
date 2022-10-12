@@ -1,12 +1,11 @@
 import { AxiosRequestConfig } from 'axios'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import TopTen from '../../components/topTen'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import {
   apiInstance,
   imageInstance,
-  netflixNumbers,
 } from '../../common/baseURLS'
 
 import { FilmRollCard, FilmRollTitle } from './styles'
@@ -16,7 +15,7 @@ interface FilmRollProps {
   fetchURL: string
   isTopTen?: boolean
 }
-interface films {
+interface Films {
   adult: boolean
   backdrop_path: string
   genre_ids: number[]
@@ -53,7 +52,21 @@ const FilmRoll: React.FC<FilmRollProps> = ({ title, fetchURL, isTopTen }) => {
       partialVisibilityGutter: 9,
     },
   }
-  const [data, setData] = useState<films[]>([])
+  const [data, setData] = useState<Films[]>([])
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "mobile";
+    }
+    return "desktop";
+  };
   const FilmListData = async () => {
     const requestConfig: AxiosRequestConfig<any> = {
       url: fetchURL,
@@ -69,29 +82,35 @@ const FilmRoll: React.FC<FilmRollProps> = ({ title, fetchURL, isTopTen }) => {
   useEffect(() => {
     FilmListData()
   }, [])
+  const checkIfIsTopTen = useCallback(() => {
+    if (isTopTen) {
+      return data.map((film, index) => {
+        return (
+          <TopTen
+            key={film.id}
+            number={index + 1}
+            posterImageURl={`${imageInstance}${film.poster_path}`}
+          />
+        )
+      })
+    }else{
+      return data?.map((film, index) => {
+        return (
+          <FilmRollCard
+            key={film.id}
+            src={`${imageInstance}${film.backdrop_path}`}
+            loading={'lazy'}
+          />
+        )
+      })
+    }
+    
+  },[data])
   return (
     <div style={{ paddingLeft: 20 }}>
       <FilmRollTitle>{title}</FilmRollTitle>
-      <Carousel responsive={responsive} infinite partialVisible={true}>
-        {isTopTen
-          ? data?.map((film, index) => {
-              return (
-                <TopTen
-                  key={index}
-                  number={index + 1}
-                  posterImageURl={`${imageInstance}${film.poster_path}`}
-                />
-              )
-            })
-          : data?.map((film, index) => {
-              return (
-                <FilmRollCard
-                  key={index}
-                  src={`${imageInstance}${film.backdrop_path}`}
-                />
-              )
-            })}
-        {}
+      <Carousel responsive={responsive} infinite partialVisible={true} removeArrowOnDeviceType={["tablet", "mobile"]} deviceType={getDeviceType()} itemClass="carousel-item-padding-40-px">
+      {checkIfIsTopTen()}
       </Carousel>
     </div>
   )
