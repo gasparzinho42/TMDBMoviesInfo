@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const TopTenContainer = styled.div`
   display: flex;
   position: relative;
-  width: 100%
+  width: 100%;
 `
 export const TopTenPoster = styled.img`
   cursor: pointer;

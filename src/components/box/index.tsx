@@ -9,12 +9,18 @@ interface BoxProps {
   mt?: CSSProperties['marginTop']
   ml?: CSSProperties['marginLeft']
   mr?: CSSProperties['marginRight']
+  pb?: CSSProperties['paddingBottom']
+  pt?: CSSProperties['paddingTop']
+  pl?: CSSProperties['paddingLeft']
+  pr?: CSSProperties['paddingRight']
   flexDirection?: CSSProperties['flexDirection']
   justifyContent?: CSSProperties['justifyContent']
   alignItems?: CSSProperties['alignItems']
   flexWrap?: CSSProperties['flexWrap']
   columnGap?: CSSProperties['columnGap']
   rowGap?: CSSProperties['rowGap']
+  backgroundImageURL?: CSSProperties['backgroundImage']
+  bgColor?: CSSProperties['backgroundColor']
   children: JSX.Element[] | JSX.Element
   style?: CSSProperties
 }

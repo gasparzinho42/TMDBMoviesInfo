@@ -1,7 +1,6 @@
 import React from 'react'
 import { netflixNumbers } from '../../common/baseURLS'
 
-import Box from '../box'
 import { TopTenContainer, TopTenPoster, TopTenNumber } from './styles'
 interface FilmRollProps {
   number: number
@@ -11,7 +10,7 @@ const TopTen: React.FC<FilmRollProps> = ({ number, posterImageURl }) => {
   return (
     <TopTenContainer>
       <TopTenNumber src={netflixNumbers(number)} />
-      <TopTenPoster loading={'lazy'} src={posterImageURl} />
+      <TopTenPoster src={posterImageURl} />
     </TopTenContainer>
   )
 }

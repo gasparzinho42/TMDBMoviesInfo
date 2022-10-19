@@ -1,30 +1,34 @@
 import React, { createContext, PropsWithChildren, useState } from 'react'
+import { IFilm } from '../components/filmRoll'
 
-export interface NetflixContextType {
-  userSession: UserSession
-  setUserSession: React.Dispatch<React.SetStateAction<UserSession>>
+export interface ITMDBContextType {
+  userSession: IUserSession
+  setUserSession: React.Dispatch<React.SetStateAction<IUserSession>>
+  selectedMovie: IFilm
+  setSelectedMovie: React.Dispatch<React.SetStateAction<IFilm>>
 }
-export interface UserSession {
+export interface IUserSession {
   expires_at: Date | null
   request_token: string
   session_id: string
 }
-export const NetflixContext: React.Context<NetflixContextType> = createContext(
-  {} as NetflixContextType
+export const TMDBContext: React.Context<ITMDBContextType> = createContext(
+  {} as ITMDBContextType
 )
-function NetflixContextProvider({ children }: PropsWithChildren) {
-  const [userSession, setUserSession] = useState<UserSession>({
+function TMDBContextProvider({ children }: PropsWithChildren) {
+  const [userSession, setUserSession] = useState<IUserSession>({
     expires_at: null,
     request_token: '',
     session_id: '',
   })
+  const [selectedMovie, setSelectedMovie] = useState({} as IFilm)
   const values = {
     userSession,
     setUserSession,
+    selectedMovie,
+    setSelectedMovie,
   }
-  return (
-    <NetflixContext.Provider value={values}>{children}</NetflixContext.Provider>
-  )
+  return <TMDBContext.Provider value={values}>{children}</TMDBContext.Provider>
 }
 
-export default NetflixContextProvider
+export default TMDBContextProvider

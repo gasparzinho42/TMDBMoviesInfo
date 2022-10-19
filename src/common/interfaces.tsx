@@ -1,31 +1,31 @@
-export interface GetTokenResponse {
+export interface IGetTokenResponse {
   data: {
     success: boolean
     expires_at: Date
     request_token: string
   }
 }
-export interface AuthWithLoginRequest {
+export interface IAuthWithLoginRequest {
   username: string
   password: string
   request_token: string
 }
-export interface CreateSessionRequest {
+export interface ICreateSessionRequest {
   request_token: string
 }
-export interface DeleteSessionRequest {
+export interface IDeleteSessionRequest {
   session_id: string
 }
-export interface DeleteSessionResponse {
+export interface IDeleteSessionResponse {
   success: boolean
 }
-export interface CreateSessionResponse {
+export interface ICreateSessionResponse {
   data: {
     success: boolean
     session_id: string
   }
 }
-interface requestError {
+export interface IrequestError {
   status_message: string
   status_code: number
 }

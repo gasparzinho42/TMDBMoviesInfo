@@ -2,6 +2,7 @@ import React from 'react'
 import { requests } from '../../common/requests'
 import Box from '../../components/box'
 import FilmRoll from '../../components/filmRoll'
+import Header from '../../components/header'
 
 const Browse: React.FC = () => {
   return (
@@ -14,17 +15,27 @@ const Browse: React.FC = () => {
         overflowX: 'hidden',
       }}
     >
+      <Header />
       <FilmRoll
-        title='NETFLIX ORIGINALS'
+        title='Originais Netflix'
         fetchURL={requests.fetchNetflixOriginals}
       />
-      <FilmRoll title='Trending Now' fetchURL={requests.fetchTrending} />
+      <FilmRoll title='Bombando agora' fetchURL={requests.fetchTrending} />
       <FilmRoll title='Top 10' fetchURL={requests.fetchTopRated} isTopTen />
-      <FilmRoll title='Action Movies' fetchURL={requests.fetchActionMovies} />
-      <FilmRoll title='Comedy Movies' fetchURL={requests.fetchComedyMovies} />
-      <FilmRoll title='Horror Movies' fetchURL={requests.fetchHorrorMovies} />
-      <FilmRoll title='Romance Movies' fetchURL={requests.fetchRomanceMovies} />
-      <FilmRoll title='Documentaries' fetchURL={requests.fetchDocumentaries} />
+      <FilmRoll title='Filmes de ação' fetchURL={requests.fetchActionMovies} />
+      <FilmRoll
+        title='Filmes de comédia'
+        fetchURL={requests.fetchComedyMovies}
+      />
+      <FilmRoll
+        title='Filmes de terror'
+        fetchURL={requests.fetchHorrorMovies}
+      />
+      <FilmRoll
+        title='Filmes de romance'
+        fetchURL={requests.fetchRomanceMovies}
+      />
+      <FilmRoll title='Documentários' fetchURL={requests.fetchDocumentaries} />
     </Box>
   )
 }

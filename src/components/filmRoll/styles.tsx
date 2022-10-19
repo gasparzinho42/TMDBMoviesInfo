@@ -7,6 +7,9 @@ export const FilmRollTitle = styled.span`
   margin-bottom: 20px;
   color: white;
   font-size: 22px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-left: 5px;
 `
 export const FilmRollScroll = styled.section`
   width: 100%;
@@ -19,17 +22,20 @@ export const FilmRollScroll = styled.section`
     display: none;
   }
 `
-export const FilmRollCard = styled.img`
-  cursor: pointer;
-  width: 96%;
-  aspect-ratio: 16/9;
+export const FilmRollCard = styled.div`
   border-radius: 4px;
-  object-fit: cover;
-  transition: transform 450ms;
-  &:hover {
-    transform: scale(1.08);
+  width: 96%;
+  & > img {
+    cursor: pointer;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 450ms;
+    &:hover {
+      transform: scale(1.08);
+    }
   }
 `
+
 export const BackButton = styled.a`
   text-decoration: none;
   & > img {

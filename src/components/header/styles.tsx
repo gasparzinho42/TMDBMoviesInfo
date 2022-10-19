@@ -1,11 +1,16 @@
-import styled from "styled-components";
+import styled from 'styled-components'
+import { colors } from '../../utils/colors'
 
 export const HeaderContainer = styled.header`
   height: fit-content;
   width: 100%;
-  background-color: transparent;
+  background-color: ${colors.modalBackgroundBlack};
   padding: 10px 5px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-`;
+  margin-bottom: 10px;
+  & > a > img {
+    margin-left: 10px;
+  }
+`

@@ -6,11 +6,9 @@ import Footer from '../../components/footer'
 import Header from '../../components/header'
 import Input from '../../components/input'
 import { Title } from './styles'
-import backgroundImage from '../../assets/img/netflixBackground.jpg'
+import backgroundImage from '../../assets/img/appBackground.jpg'
 import Checkbox from '../../components/checkbox'
-import LinkText from '../../components/LinkText'
-import Text from '../../components/Text'
-import { CustomSpan } from '../../components/Text/styles'
+
 import {
   createSession,
   deleteSession,
@@ -18,19 +16,19 @@ import {
   validateWithLogin,
 } from '../../common/API'
 import {
-  AuthWithLoginRequest,
-  CreateSessionRequest,
-  DeleteSessionRequest,
+  IAuthWithLoginRequest,
+  ICreateSessionRequest,
+  IDeleteSessionRequest,
 } from '../../common/interfaces'
 import { useNavigate } from 'react-router-dom'
-import { NetflixContext, UserSession } from '../../context'
+import { TMDBContext, IUserSession } from '../../context'
 
 const LandingPage: React.FC = () => {
   const [login, setLogin] = useState('')
   const [sessionID, setSessionID] = useState('')
   const [password, setpassword] = useState('')
   const navigate = useNavigate()
-  const { setUserSession } = useContext(NetflixContext)
+  const { setUserSession } = useContext(TMDBContext)
 
   const loginFunctions = {
     handleLogin: async () => {
@@ -56,13 +54,13 @@ const LandingPage: React.FC = () => {
       return await getToken()
     },
     createTMDBSession: async (requestToken: string) => {
-      const createSessionData: CreateSessionRequest = {
+      const createSessionData: ICreateSessionRequest = {
         request_token: requestToken || '',
       }
       return await createSession(createSessionData)
     },
     authenticateTMDBUser: async (tokenRes: string) => {
-      const data: AuthWithLoginRequest = {
+      const data: IAuthWithLoginRequest = {
         username: login,
         password: password,
         request_token: tokenRes,
@@ -71,7 +69,7 @@ const LandingPage: React.FC = () => {
     },
     handleDeleteSession: async () => {
       if (login && password) {
-        const data: DeleteSessionRequest = {
+        const data: IDeleteSessionRequest = {
           session_id: sessionID,
         }
         const deleteSessionRes = await deleteSession(data)
@@ -84,7 +82,7 @@ const LandingPage: React.FC = () => {
       request_token: string,
       session_id: string
     ) => {
-      const session: UserSession = {
+      const session: IUserSession = {
         expires_at: expires_at,
         request_token: request_token,
         session_id: session_id,
@@ -159,36 +157,6 @@ const LandingPage: React.FC = () => {
               name='rememberMe'
               onChange={evt => console.log(evt.target.checked)}
             />
-            <Box w='100%' justifyContent='flex-end'>
-              <LinkText
-                href='https://www.netflix.com/LoginHelp'
-                label='Precisa de ajuda?'
-              />
-            </Box>
-          </Box>
-          <Box
-            w='100%'
-            justifyContent='flex-start'
-            alignItems='center'
-            columnGap='2px'
-            mb='16px'
-          >
-            <Text label='Novo por aqui?' />
-            <Text altColor='white' label='Assine agora.' />
-          </Box>
-          <Box
-            w='100%'
-            justifyContent='flex-start'
-            alignItems='center'
-            mb='50px'
-          >
-            <Box w='100%'>
-              <CustomSpan>
-                Esta página é protegida pelo Google reCAPTCHA para garantir que
-                você não é um robô.
-                <CustomSpan altColor='#0071eb'> Saiba mais</CustomSpan>
-              </CustomSpan>
-            </Box>
           </Box>
         </Box>
       </CardWrapper>

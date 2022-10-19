@@ -1,37 +1,38 @@
 import { AxiosRequestConfig } from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import TopTen from '../../components/topTen'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import {
-  apiInstance,
-  imageInstance,
-} from '../../common/baseURLS'
-
+import { apiInstance, imageInstance } from '../../common/baseURLS'
 import { FilmRollCard, FilmRollTitle } from './styles'
+import { useNavigate } from 'react-router-dom'
+import { TMDBContext } from '../../context'
 
-interface FilmRollProps {
+interface IFilmRollProps {
   title: string
   fetchURL: string
   isTopTen?: boolean
 }
-interface Films {
+export interface IFilm {
   adult: boolean
   backdrop_path: string
   genre_ids: number[]
   id: number
   original_language: string
-  original_title: string
+  original_title?: string
+  original_name?: string
   overview: string
   popularity: number
   poster_path: string
   release_date: string
-  title: string
+  title?: string
+  name?: string
+  first_air_date?: string
   video?: boolean
   vote_average: number
   vote_count: number
 }
-const FilmRoll: React.FC<FilmRollProps> = ({ title, fetchURL, isTopTen }) => {
+const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -52,21 +53,23 @@ const FilmRoll: React.FC<FilmRollProps> = ({ title, fetchURL, isTopTen }) => {
       partialVisibilityGutter: 9,
     },
   }
-  const [data, setData] = useState<Films[]>([])
+  const navigate = useNavigate()
+  const { setSelectedMovie } = useContext(TMDBContext)
+  const [data, setData] = useState<IFilm[]>([])
   const getDeviceType = () => {
-    const ua = navigator.userAgent;
-    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-      return "tablet";
+    const userAgent = navigator.userAgent
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(userAgent)) {
+      return 'tablet'
     }
     if (
       /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
-        ua
+        userAgent
       )
     ) {
-      return "mobile";
+      return 'mobile'
     }
-    return "desktop";
-  };
+    return 'desktop'
+  }
   const FilmListData = async () => {
     const requestConfig: AxiosRequestConfig<any> = {
       url: fetchURL,
@@ -93,26 +96,40 @@ const FilmRoll: React.FC<FilmRollProps> = ({ title, fetchURL, isTopTen }) => {
           />
         )
       })
-    }else{
+    } else {
       return data?.map((film, index) => {
         return (
-          <FilmRollCard
-            key={film.id}
-            src={`${imageInstance}${film.backdrop_path}`}
-            loading={'lazy'}
-          />
+          <FilmRollCard>
+            <img
+              key={film.id}
+              alt={film.name || film.title}
+              src={`${imageInstance}${film.poster_path}`}
+              onClick={() => {
+                setSelectedMovie(film)
+                navigate('/movie')
+              }}
+            />
+          </FilmRollCard>
         )
       })
     }
-    
-  },[data])
+  }, [data])
   return (
-    <div style={{ paddingLeft: 20 }}>
+    <>
       <FilmRollTitle>{title}</FilmRollTitle>
-      <Carousel responsive={responsive} infinite partialVisible={true} removeArrowOnDeviceType={["tablet", "mobile"]} deviceType={getDeviceType()} itemClass="carousel-item-padding-40-px">
-      {checkIfIsTopTen()}
-      </Carousel>
-    </div>
+      <div style={{ paddingLeft: 20 }}>
+        <Carousel
+          responsive={responsive}
+          infinite={!isTopTen}
+          partialVisible={true}
+          removeArrowOnDeviceType={['tablet', 'mobile']}
+          deviceType={getDeviceType()}
+          itemClass='carousel-item-padding-40-px'
+        >
+          {checkIfIsTopTen()}
+        </Carousel>
+      </div>
+    </>
   )
 }
 
