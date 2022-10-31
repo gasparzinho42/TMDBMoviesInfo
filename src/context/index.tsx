@@ -1,11 +1,11 @@
 import React, { createContext, PropsWithChildren, useState } from 'react'
-import { IFilm } from '../components/filmRoll'
+import { IFilm } from '../pages/browse/components/filmRoll'
 
 export interface ITMDBContextType {
   userSession: IUserSession
   setUserSession: React.Dispatch<React.SetStateAction<IUserSession>>
-  selectedMovie: IFilm
-  setSelectedMovie: React.Dispatch<React.SetStateAction<IFilm>>
+  currentMovieId: string
+  setCurrentMovieId: React.Dispatch<React.SetStateAction<string>>
 }
 export interface IUserSession {
   expires_at: Date | null
@@ -21,12 +21,12 @@ function TMDBContextProvider({ children }: PropsWithChildren) {
     request_token: '',
     session_id: '',
   })
-  const [selectedMovie, setSelectedMovie] = useState({} as IFilm)
+  const [currentMovieId, setCurrentMovieId] = useState('')
   const values = {
     userSession,
     setUserSession,
-    selectedMovie,
-    setSelectedMovie,
+    currentMovieId,
+    setCurrentMovieId,
   }
   return <TMDBContext.Provider value={values}>{children}</TMDBContext.Provider>
 }

@@ -7,7 +7,7 @@ export const HeaderContainer = styled.header`
   background-color: ${colors.modalBackgroundBlack};
   padding: 10px 5px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
   & > a > img {

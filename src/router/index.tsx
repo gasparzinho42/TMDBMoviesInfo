@@ -10,7 +10,7 @@ const RoutesComponent = () => {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/browse' element={<Browse />} />
-        <Route path='/movie' element={<MovieInfo />} />
+        <Route path='/infos/:mediaType/:mediaTypeId' element={<MovieInfo />} />
       </Routes>
     </Router>
   )

@@ -7,7 +7,7 @@ export const TopTenContainer = styled.div`
 `
 export const TopTenPoster = styled.img`
   cursor: pointer;
-  height: 130px;
+  height: 100%;
   position: relative;
   width: 50%;
   left: 77px;
@@ -21,10 +21,9 @@ export const TopTenPoster = styled.img`
 export const TopTenNumber = styled.img`
   cursor: pointer;
   width: 50%;
-  height: 120%;
+  height: 100%;
   position: absolute;
-  left: 0;
-  bottom: -11px;
+  left: -15px;
   border-radius: 4px;
   object-fit: cover;
   transition: transform 450ms;

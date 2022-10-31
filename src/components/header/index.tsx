@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { deleteSession } from '../../common/API'
+import { IDeleteSessionRequest } from '../../common/interfaces'
+import { TMDBContext } from '../../context'
 import { HeaderContainer } from './styles'
-
-const Header: React.FC = () => {
+interface headerProps {
+  hideLogout?: boolean
+}
+const Header: React.FC<headerProps> = ({ hideLogout }) => {
+  const { userSession } = useContext(TMDBContext)
+  const navigate = useNavigate()
+  const HandleLogout = async () => {
+    console.log('userSession', userSession)
+    const data: IDeleteSessionRequest = {
+      session_id: userSession.session_id,
+    }
+    const deleteSessionRes = await deleteSession(data)
+    navigate('/')
+    console.log(deleteSessionRes?.success)
+  }
   return (
     <HeaderContainer>
       <a href='https://www.themoviedb.org/?language=pt-BR'>
@@ -12,6 +29,17 @@ const Header: React.FC = () => {
           alt='TMDB Logo'
         />
       </a>
+      <span
+        style={{
+          color: 'white',
+          marginRight: 30,
+          cursor: 'pointer',
+          display: `${hideLogout ? 'none' : 'block'}`,
+        }}
+        onClick={HandleLogout}
+      >
+        Logout
+      </span>
     </HeaderContainer>
   )
 }

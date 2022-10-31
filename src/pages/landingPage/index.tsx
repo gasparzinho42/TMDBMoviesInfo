@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Box from '../../components/box'
+import Box from '../../components/layout/box'
 import Button from '../../components/button'
 import CardWrapper from '../../components/cardWrapper'
 import Footer from '../../components/footer'
@@ -25,7 +25,7 @@ import { TMDBContext, IUserSession } from '../../context'
 
 const LandingPage: React.FC = () => {
   const [login, setLogin] = useState('')
-  const [sessionID, setSessionID] = useState('')
+  const [userSessionID, setSessionID] = useState('')
   const [password, setpassword] = useState('')
   const navigate = useNavigate()
   const { setUserSession } = useContext(TMDBContext)
@@ -44,7 +44,7 @@ const LandingPage: React.FC = () => {
         const newSession = loginFunctions.createUserSession(
           tokenResponse.expires_at,
           requestToken,
-          sessionID
+          sessionId
         )
         setUserSession(newSession)
         navigate('/browse')
@@ -66,16 +66,6 @@ const LandingPage: React.FC = () => {
         request_token: tokenRes,
       }
       return await validateWithLogin(data)
-    },
-    handleDeleteSession: async () => {
-      if (login && password) {
-        const data: IDeleteSessionRequest = {
-          session_id: sessionID,
-        }
-        const deleteSessionRes = await deleteSession(data)
-        if (deleteSessionRes?.success) return
-        console.error(deleteSessionRes)
-      }
     },
     createUserSession: (
       expires_at: Date,
@@ -104,11 +94,10 @@ const LandingPage: React.FC = () => {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        overflowX: 'hidden',
-        overflowY: 'scroll',
+        overflow: 'hidden',
       }}
     >
-      <Header />
+      <Header hideLogout />
       <CardWrapper>
         <Box w='100%' flexDirection='column'>
           <Title style={{ marginBottom: '20px' }}>Entrar</Title>
@@ -121,6 +110,7 @@ const LandingPage: React.FC = () => {
           </Box>
           <Box w='100%' mb='30px'>
             <Input
+              type='password'
               value={password}
               onChange={evt => setpassword(evt.target.value)}
               title='Senha'
@@ -135,27 +125,6 @@ const LandingPage: React.FC = () => {
               onClick={() => {
                 loginFunctions.handleLogin()
               }}
-            />
-          </Box>
-          <Box w='100%' mb='10px'>
-            <Button
-              title='Deletar sessão'
-              onClick={() => {
-                loginFunctions.handleDeleteSession()
-              }}
-            />
-          </Box>
-          <Box
-            w='100%'
-            justifyContent='space-between'
-            alignItems='center'
-            mb='90px'
-          >
-            <Checkbox
-              label='Lembre-se de mim'
-              id='rememberMe'
-              name='rememberMe'
-              onChange={evt => console.log(evt.target.checked)}
             />
           </Box>
         </Box>

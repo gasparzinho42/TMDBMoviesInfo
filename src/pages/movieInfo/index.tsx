@@ -1,33 +1,32 @@
-import React, { useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  imageInstanceBackdrop,
-  imageInstancePoster,
-} from '../../common/baseURLS'
-import Box from '../../components/box'
-
-import { TMDBContext } from '../../context'
-import { colors } from '../../utils/colors'
-import { Percentage, Poster, SubTitle, Text, Title } from './styles'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getMovieDetails, getTvDetails } from '../../common/API'
+import { IGetMovieDetail, IGetTvDetail } from '../../common/interfaces'
+import Box from '../../components/layout/box'
+import Header from '../../components/header'
+import Movie from './components/movie'
+import Tv from './components/tv'
 
 const MovieInfo: React.FC = () => {
-  const { selectedMovie } = useContext(TMDBContext)
+  const { mediaTypeId, mediaType } = useParams()
+  const [movieDetail, setMovieDetail] = useState<IGetMovieDetail>()
+  const [tvDetail, setTvDetail] = useState<IGetTvDetail>()
   const navigate = useNavigate()
   useEffect(() => {
-    if (!selectedMovie.backdrop_path) navigate('/browse')
+    api.fetchMediaTypeDetail()
   }, [])
-  const movie = {
-    getReleaseDate: () => {
-      const date = selectedMovie.release_date || selectedMovie.first_air_date
-      return movie.parseDate(date)
-    },
-    parseDate: (date?: string) => date?.split('-')[0],
-    getPercentage: () => selectedMovie.vote_average * 10,
-    getPercentageColor: () => {
-      const moviePercentage: number = movie.getPercentage()
-      if (moviePercentage > 80) return 'green'
-      if (moviePercentage > 50) return 'yellow'
-      return 'red'
+
+  const api = {
+    fetchMediaTypeDetail: async () => {
+      if (mediaTypeId === undefined) return navigate('/browse')
+      if (mediaType === 'movie') {
+        const result = await getMovieDetails(mediaTypeId)
+        setMovieDetail(result || ({} as IGetMovieDetail))
+      } else {
+        const result = await getTvDetails(mediaTypeId)
+        if (result === undefined) return navigate('/browse')
+        setTvDetail(result)
+      }
     },
   }
   return (
@@ -40,45 +39,12 @@ const MovieInfo: React.FC = () => {
         overflowX: 'hidden',
       }}
     >
-      <Box
-        w={'100%'}
-        flexDirection='row'
-        backgroundImageURL={`${imageInstanceBackdrop}${selectedMovie.backdrop_path}`}
-        style={{
-          backgroundPosition: '(right - 200px) top',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-        }}
-        pt={'30px'}
-        pb={'30px'}
-      >
-        <Poster
-          src={`${imageInstancePoster}${selectedMovie.poster_path}`}
-          alt='Movie image'
-        />
-        <Box
-          w={'50%'}
-          flexDirection='column'
-          pl={'20px'}
-          bgColor={colors.modalBackgroundBlack}
-          style={{ borderRadius: '0px 8px 8px 0px' }}
-        >
-          <Title>
-            {selectedMovie.name || selectedMovie.title}
-            <span> ({movie.getReleaseDate()})</span>
-          </Title>
-          <Text>
-            <Percentage color={movie.getPercentageColor()}>
-              {movie.getPercentage()}%
-            </Percentage>{' '}
-            de aceitação do público
-          </Text>
-          <Box w={'50%'} flexWrap='wrap' flexDirection='column' pb='15px'>
-            <SubTitle>Sinopse</SubTitle>
-            <Text>{selectedMovie.overview}</Text>
-          </Box>
-        </Box>
-      </Box>
+      <Header />
+      {mediaType === 'movie' ? (
+        <Movie movieDetail={movieDetail} />
+      ) : (
+        <Tv tvDetail={tvDetail} />
+      )}
     </Box>
   )
 }

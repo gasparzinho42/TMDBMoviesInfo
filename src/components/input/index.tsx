@@ -4,8 +4,14 @@ interface InputProps {
   title: string
   value: string
   onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void
+  type?: React.HTMLInputTypeAttribute
 }
-const Input: React.FC<InputProps> = ({ title, value, onChange }) => {
+const Input: React.FC<InputProps> = ({
+  title,
+  value,
+  onChange,
+  type = 'text',
+}) => {
   const [activateAnimation, setActivateAnimation] = useState(false)
   const [deactivateAnimation, setDeactivateAnimation] = useState(false)
   return (
@@ -15,6 +21,7 @@ const Input: React.FC<InputProps> = ({ title, value, onChange }) => {
       </FakePlaceholder>
       <CustomInput
         value={value}
+        type={type}
         onChange={evt => {
           const { value } = evt.target
           setDeactivateAnimation(value === '')

@@ -1,17 +1,22 @@
 import { AxiosRequestConfig } from 'axios'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import TopTen from '../../components/topTen'
+import React, { useCallback, useEffect, useState } from 'react'
+import TopTen from '../topTen'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import { apiInstance, imageInstance } from '../../common/baseURLS'
-import { FilmRollCard, FilmRollTitle } from './styles'
+import {
+  apiInstance,
+  imageInstance,
+  topTenImageInstance,
+} from '../../../../common/baseURLS'
+import { FilmRollCard, MainTitle } from './styles'
 import { useNavigate } from 'react-router-dom'
-import { TMDBContext } from '../../context'
+import Box from '../../../../components/layout/box'
 
 interface IFilmRollProps {
   title: string
   fetchURL: string
   isTopTen?: boolean
+  type: 'mixed' | 'movie' | 'tv'
 }
 export interface IFilm {
   adult: boolean
@@ -23,6 +28,7 @@ export interface IFilm {
   original_name?: string
   overview: string
   popularity: number
+  media_type?: 'movie' | 'tv'
   poster_path: string
   release_date: string
   title?: string
@@ -32,7 +38,12 @@ export interface IFilm {
   vote_average: number
   vote_count: number
 }
-const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
+const FilmRoll: React.FC<IFilmRollProps> = ({
+  title,
+  fetchURL,
+  isTopTen,
+  type,
+}) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -54,7 +65,6 @@ const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
     },
   }
   const navigate = useNavigate()
-  const { setSelectedMovie } = useContext(TMDBContext)
   const [data, setData] = useState<IFilm[]>([])
   const getDeviceType = () => {
     const userAgent = navigator.userAgent
@@ -81,7 +91,13 @@ const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
       : results.data.results
     setData(res)
   }
-
+  const card = {
+    handleClick: (film: IFilm) => {
+      const movieId = film.id.toString()
+      const mediaType = type === 'mixed' ? film.media_type : type
+      navigate(`/infos/${mediaType}/${movieId}`)
+    },
+  }
   useEffect(() => {
     FilmListData()
   }, [])
@@ -92,7 +108,8 @@ const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
           <TopTen
             key={film.id}
             number={index + 1}
-            posterImageURl={`${imageInstance}${film.poster_path}`}
+            posterImageURl={`${topTenImageInstance}${film.poster_path}`}
+            onClick={() => card.handleClick(film)}
           />
         )
       })
@@ -104,10 +121,7 @@ const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
               key={film.id}
               alt={film.name || film.title}
               src={`${imageInstance}${film.poster_path}`}
-              onClick={() => {
-                setSelectedMovie(film)
-                navigate('/movie')
-              }}
+              onClick={() => card.handleClick(film)}
             />
           </FilmRollCard>
         )
@@ -116,12 +130,15 @@ const FilmRoll: React.FC<IFilmRollProps> = ({ title, fetchURL, isTopTen }) => {
   }, [data])
   return (
     <>
-      <FilmRollTitle>{title}</FilmRollTitle>
-      <div style={{ paddingLeft: 20 }}>
+      <Box w='100%' pl='15px' mb='10px'>
+        <MainTitle>{title}</MainTitle>
+      </Box>
+      <div style={{ paddingLeft: 25 }}>
         <Carousel
           responsive={responsive}
           infinite={!isTopTen}
-          partialVisible={true}
+          partialVisible
+          draggable={false}
           removeArrowOnDeviceType={['tablet', 'mobile']}
           deviceType={getDeviceType()}
           itemClass='carousel-item-padding-40-px'

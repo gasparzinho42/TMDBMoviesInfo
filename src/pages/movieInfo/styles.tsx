@@ -10,18 +10,37 @@ export const Poster = styled.img`
   z-index: 999;
 `
 export const Title = styled.h1`
+  font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
   color: white;
   font-weight: 700;
   font-size: 35px;
+  margin-bottom: 0;
   > span {
     color: grey;
     font-weight: thin;
   }
 `
+export const TitleCast = styled.h1`
+  font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 30px;
+  margin: 0;
+`
 export const SubTitle = styled.h2`
+  font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
   color: white;
   font-weight: 700;
   font-size: 20px;
+  margin: 0;
+`
+
+export const AltSubTitle = styled.h2`
+  font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
+  color: grey;
+  font-weight: normal;
+  font-size: 13px;
+  margin: 0;
 `
 export const Text = styled.p`
   color: white;
@@ -30,6 +49,7 @@ export const Text = styled.p`
   margin: 0;
 `
 export const Percentage = styled.span<MovieInfoProps>`
+  font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
   color: ${props => props.color};
   font-weight: normal;
   font-size: 20px;

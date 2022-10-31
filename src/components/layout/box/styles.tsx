@@ -23,8 +23,9 @@ interface BoxProps {
 }
 export const BoxStyled = styled.div<BoxProps>`
   display: flex;
-  background-color: ${props => `${props.bgColor}` || null};
-  background-image: ${props => `url(${props.backgroundImageURL})` || null};
+  background-color: ${props => (props.bgColor ? `${props.bgColor}` : null)};
+  background-image: ${props =>
+    props.backgroundImageURL ? `url(${props.backgroundImageURL})` : null};
   flex-direction: ${props => props.flexDirection || 'row'};
   justify-content: ${props => props.justifyContent || null};
   align-items: ${props => props.alignItems || null};
@@ -43,4 +44,11 @@ export const BoxStyled = styled.div<BoxProps>`
   min-height: ${props => props.minh || null};
   height: ${props => props.h || null};
   width: ${props => props.w || null};
+  ::-webkit-scrollbar {
+    height: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+  }
 `

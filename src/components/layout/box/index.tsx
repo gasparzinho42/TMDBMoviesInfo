@@ -21,7 +21,7 @@ interface BoxProps {
   rowGap?: CSSProperties['rowGap']
   backgroundImageURL?: CSSProperties['backgroundImage']
   bgColor?: CSSProperties['backgroundColor']
-  children: JSX.Element[] | JSX.Element
+  children: any
   style?: CSSProperties
 }
 const Box: React.FC<BoxProps> = ({ children, ...props }) => {

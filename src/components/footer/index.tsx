@@ -1,5 +1,6 @@
 import React from 'react'
-import Box from '../box'
+import Box from '../layout/box'
+
 import { CustomSpan, FooterContainer } from './styles'
 
 const Footer: React.FC = () => {

@@ -1,15 +1,11 @@
 import styled from 'styled-components'
 
-export const FilmRollContainer = styled.div``
-export const FilmRollTitle = styled.span`
+export const MainTitle = styled.span`
   font-family: 'NetflixSans-Bold', 'Helvetica Neue', Helvetica, sans-serif;
+  width: max-content;
   height: fit-content;
-  margin-bottom: 20px;
   color: white;
   font-size: 22px;
-  margin-bottom: 15px;
-  margin-top: 5px;
-  margin-left: 5px;
 `
 export const FilmRollScroll = styled.section`
   width: 100%;

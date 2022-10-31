@@ -7,6 +7,8 @@ import {
   ICreateSessionResponse,
   IDeleteSessionRequest,
   IDeleteSessionResponse,
+  IGetMovieDetailResponse,
+  IGetTvDetailResponse,
 } from './interfaces'
 
 export const getToken = async () => {
@@ -51,6 +53,30 @@ export const deleteSession = async (data: IDeleteSessionRequest) => {
     }
     const res: IDeleteSessionResponse = await apiInstance.request(config)
     return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const getMovieDetails = async (movie_id: string) => {
+  try {
+    const config: AxiosRequestConfig<any> = {
+      url: `/movie/${movie_id}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=credits&language=pt-BR`,
+      method: 'get',
+    }
+    const res: IGetMovieDetailResponse = await apiInstance.request(config)
+    return res.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const getTvDetails = async (tv_id: string) => {
+  try {
+    const config: AxiosRequestConfig<any> = {
+      url: `/tv/${tv_id}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=credits&language=pt-BR`,
+      method: 'get',
+    }
+    const res: IGetTvDetailResponse = await apiInstance.request(config)
+    return res.data
   } catch (error) {
     console.log(error)
   }
